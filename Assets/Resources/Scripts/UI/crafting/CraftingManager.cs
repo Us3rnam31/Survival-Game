@@ -40,43 +40,7 @@ public class CraftingManager : MonoBehaviour
 
     public void SelectRecipe(Recipe recipe)
     {
-        selectedRecipe = recipe;
-
-        foreach (Transform child in requirementPanel)
-        {
-            Destroy(child.gameObject);
-        }
-
-        itemIcon.sprite = recipe.result.icon;
-        itemName.text = recipe.result.itemName;
-        description.text = recipe.result.Description;
-
-        foreach (Ingredient ingredient in recipe.ingredients)
-        {
-            GameObject entry =
-                Instantiate(
-                    ingredientEntryPrefab,
-                    requirementPanel
-                );
-
-            IngredientUI ui =
-                entry.GetComponent<IngredientUI>();
-
-            int owned =
-                inventory.GetItemCount(
-                    ingredient.item
-                );
-
-            ui.icon.sprite =
-                ingredient.item.icon;
-
-            ui.text.text =
-                ingredient.item.itemName +
-                " " +
-                owned +
-                "/" +
-                ingredient.amount;
-        }
+        UpdateSelectedRecipe(recipe);
     }
 
     void CraftSelectedRecipe()
@@ -150,6 +114,7 @@ public class CraftingManager : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
+
     bool CanCraft()
     {
         foreach (Ingredient ingredient in selectedRecipe.ingredients)
@@ -162,6 +127,7 @@ public class CraftingManager : MonoBehaviour
 
         return true;
     }
+
     public void UpdateSelectedRecipe(Recipe recipe)
     {
         selectedRecipe = recipe;

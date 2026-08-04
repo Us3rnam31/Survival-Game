@@ -16,14 +16,17 @@ public class crafting : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(actionKey) && !HudToggle && !BackpackToggle.HudToggle && !commandConsoleToggle.HudToggle)
+        bool backpackOpen = BackpackToggle != null && BackpackToggle.HudToggle;
+        bool consoleOpen = commandConsoleToggle != null && commandConsoleToggle.HudToggle;
+
+        if (Input.GetKeyDown(actionKey) && !HudToggle && !backpackOpen && !consoleOpen)
         {
             openCraftingHud();
             HudToggle = true;
         }
-        else if((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(actionKey)) && HudToggle)
+        else if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(actionKey)) && HudToggle)
         {
-            closeCraftingHud();//peanutbutter
+            closeCraftingHud();
             HudToggle = false;
         }
     }

@@ -9,6 +9,8 @@ public class CommandConsoleToggle : MonoBehaviour
     public CraftingManager craftingManager;
     public PlayerMovement playerMovement;
     public TMP_InputField inputField;
+    public crafting crafting;
+    public BackpackToggle backpackToggle;
     public bool HudToggle = false;
 
     void Start()
@@ -17,7 +19,10 @@ public class CommandConsoleToggle : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(actionKey) && !HudToggle)
+        bool craftingOpen = crafting != null && crafting.HudToggle;
+        bool backpackOpen = backpackToggle != null && backpackToggle.HudToggle;
+
+        if (Input.GetKeyDown(actionKey) && !HudToggle && !craftingOpen && !backpackOpen)
         {
             Gameobject.SetActive(true);
             playerCamera.mouseLock = false;

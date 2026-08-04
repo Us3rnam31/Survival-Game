@@ -71,8 +71,6 @@ public class PlayerMovement : MonoBehaviour
                 velocityY += gravity * Time.deltaTime;
             }
 
-            velocityY += gravity * Time.deltaTime;
-
             Vector3 velocity = move.normalized * currentSpeed;
             velocity.y = velocityY;
 
@@ -82,10 +80,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 inventory.DropItem(0, transform.position + transform.forward * 2f);
             }
-        }
-        else
-        {
-            
         }
     }
 }

@@ -21,7 +21,6 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddItem(ItemData newItem, int amount)
     {
-        Debug.Log("Adding " + newItem.itemName);
         for (int i = 0; i < slots.Count; i++)
         {
             if (!slots[i].IsEmpty() && slots[i].item == newItem && slots[i].count < newItem.maxStack)
@@ -92,15 +91,6 @@ public class InventoryManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        Debug.Log("slotUIs length = " + slotUIs.Length);
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if (slots[i].item != null)
-            {
-                UnityEngine.Debug.Log("Slot " + i + ": " + slots[i].item.itemName + " x" + slots[i].count);
-                Debug.Log("UI updating slot " + i + " with count " + slots[i].count);
-            }
-        }
         for (int i = 0; i < slotUIs.Length; i++)
         {
             if (i >= slots.Count)
@@ -118,6 +108,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
     public int GetItemCount(ItemData item)
     {
         int total = 0;
@@ -132,6 +123,7 @@ public class InventoryManager : MonoBehaviour
 
         return total;
     }
+
     public void RemoveItem(ItemData item, int amount)
     {
         foreach (InventorySlot slot in slots)

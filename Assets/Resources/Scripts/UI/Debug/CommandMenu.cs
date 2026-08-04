@@ -12,13 +12,12 @@ public class CommandMenu : MonoBehaviour
     public CraftingManager craftingManager;
     public Death death;
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            runCommand(); 
-            
+            runCommand();
+
             inputField.text = "";
             inputField.Select();
             inputField.ActivateInputField();
@@ -27,13 +26,13 @@ public class CommandMenu : MonoBehaviour
 
     public void runCommand()
     {
-        string input = inputField.text;
+        string input = inputField.text.Trim();
+        if (string.IsNullOrEmpty(input)) return;
 
         string[] args = input.Split(' ');
-
         string command = args[0].ToLower();
 
-        switch(command)
+        switch (command)
         {
             case "/death":
                 killPlayer();
@@ -48,7 +47,7 @@ public class CommandMenu : MonoBehaviour
                 break;
 
             case "/heal":
-                healPlayer(args); 
+                healPlayer(args);
                 break;
 
             case "/give":
@@ -56,11 +55,11 @@ public class CommandMenu : MonoBehaviour
                 break;
 
             case "/food":
-                food(args); 
+                if (args.Length >= 2) food(args);
                 break;
 
             case "/water":
-                water(args);
+                if (args.Length >= 2) water(args);
                 break;
         }
     }
@@ -69,6 +68,7 @@ public class CommandMenu : MonoBehaviour
     {
         death.dead = true;
     }
+
     public void damagePlayer(string[] args)
     {
         if (args.Length > 1)
@@ -77,9 +77,10 @@ public class CommandMenu : MonoBehaviour
             health.damage(damage);
         }
     }
+
     public void healPlayer(string[] args)
     {
-        if(args.Length >= 2)
+        if (args.Length >= 2)
         {
             int.TryParse(args[1], out int hp);
             health.currentHealth += hp;
@@ -89,10 +90,13 @@ public class CommandMenu : MonoBehaviour
             health.currentHealth = health.maxHealth;
         }
     }
+
     public void give(string[] args)
     {
+        if (args.Length < 2) return;
+
         ItemData targetItem = null;
-        
+
         foreach (ItemData item in itemList.itemList)
         {
             if (item.itemName.ToLower() == args[1].ToLower())
@@ -101,6 +105,7 @@ public class CommandMenu : MonoBehaviour
                 break;
             }
         }
+
         if (targetItem != null)
         {
             int amount = 1;
@@ -113,13 +118,12 @@ public class CommandMenu : MonoBehaviour
             if (targetItem.ItemType == ItemType.backpack)
             {
                 inventory.RemoveItem(targetItem, 1);
-
                 inventory.AddInventorySlots(targetItem.maxStorage);
-
                 craftingManager.hasBackpack = true;
             }
         }
     }
+
     public void food(string[] args)
     {
         string subCommand = args[1].ToLower();
@@ -127,30 +131,21 @@ public class CommandMenu : MonoBehaviour
         switch (subCommand)
         {
             case "add":
-                {
-                    if (args.Length < 3) return;
-
-                    if (float.TryParse(args[2], out float hunger))
-                    {
-                        foodBar.addFood(hunger);
-                    }
-                }
+                if (args.Length >= 3 && float.TryParse(args[2], out float addHunger))
+                    foodBar.addFood(addHunger);
                 break;
+
             case "remove":
-                {
-                    if (args.Length < 3) return;
-
-                    if (float.TryParse(args[2], out float hunger))
-                    {
-                        foodBar.removeFood(hunger);
-                    }
-                }
+                if (args.Length >= 3 && float.TryParse(args[2], out float removeHunger))
+                    foodBar.removeFood(removeHunger);
                 break;
+
             case "full":
                 foodBar.currentFood = foodBar.totalFood;
                 break;
         }
     }
+
     public void water(string[] args)
     {
         string subCommand = args[1].ToLower();
@@ -158,30 +153,21 @@ public class CommandMenu : MonoBehaviour
         switch (subCommand)
         {
             case "add":
-                {
-                    if (args.Length < 3) return;
-
-                    if (float.TryParse(args[2], out float water))
-                    {
-                        waterBar.addWater(water);
-                    }
-                }
+                if (args.Length >= 3 && float.TryParse(args[2], out float addWater))
+                    waterBar.addWater(addWater);
                 break;
+
             case "remove":
-                {
-                    if (args.Length < 3) return;
-
-                    if (float.TryParse(args[2], out float water))
-                    {
-                        waterBar.removeWater(water);
-                    }
-                }
+                if (args.Length >= 3 && float.TryParse(args[2], out float removeWater))
+                    waterBar.removeWater(removeWater);
                 break;
+
             case "full":
                 waterBar.currentWater = waterBar.totalWater;
                 break;
         }
     }
+
     public void revive()
     {
         death.dead = false;

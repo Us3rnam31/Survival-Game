@@ -28,6 +28,7 @@ public class PlayerCamera : MonoBehaviour
             xRotation = Mathf.Clamp(xRotation, -90f, 90f);
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             playerBody.Rotate(Vector3.up * mouseX);
+
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, range))
@@ -49,24 +50,20 @@ public class PlayerCamera : MonoBehaviour
                         lastLooked = null;
                     }
                 }
-            }
-            else
-            {
-                lastLooked = null;
-            }
-            if(Physics.Raycast(ray, out hit, range))
-            {
+
                 if (hit.collider.gameObject.CompareTag("water") && Input.GetKeyDown(KeyCode.E))
                 {
                     statusManager.UpdateWater(50);
                 }
             }
+            else
+            {
+                lastLooked = null;
+            }
         }
         else
         {
             Cursor.lockState = CursorLockMode.None;
-            Debug.Log(Cursor.lockState);
         }
-        
     }
 }
