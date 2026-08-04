@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a382c9ff5677c764cabc34ae7cb2e426, type: 3}
+  m_Name: Tent
+  m_EditorClassIdentifier: Assembly-CSharp::Recipe
+  result: {fileID: 11400000, guid: 8f8176ae8765b9342918c25251c3f743, type: 2}
+  resultAmount: 1
+  Discription: A small shelter used to set a person's spawn point and sleep for periods
+    of time.
+  ingredients:
+  - item: {fileID: 11400000, guid: c77e0de6cb52adf4c84d7b49bd6bb96e, type: 2}
+    amount: 5
+  - item: {fileID: 11400000, guid: 11edcf5bb3a3d8345816fce0b582dfa4, type: 2}
+    amount: 10
+  - item: {fileID: 11400000, guid: e2b33856ce1499a4695b8b4bb8caf489, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: 5784d5cbb46c0c448beab2538d5e562a, type: 2}
+    amount: 8

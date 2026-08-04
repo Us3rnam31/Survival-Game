@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc38be7c2a8d4c47bc3519362e1c03c, type: 3}
+  m_Name: Tent
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  Type: 3
+  itemName: Tent
+  icon: {fileID: 21300000, guid: f7ba81b851a187142801354e1f30eb15, type: 3}
+  maxStack: 1
+  Description: A small shelter that you can set your spawn in and sleep in for a
+    period of time.
+  worldPrefab: {fileID: 3182878036610048749, guid: 288df1544f5a892458e01a3999ebcf5f, type: 3}
+  ghostPrefab: {fileID: 4832544141496401689, guid: 39345074ffa23a048b9235a9886ad454, type: 3}
+  inventoryPrefab: {fileID: 3182878036610048749, guid: 288df1544f5a892458e01a3999ebcf5f, type: 3}
+  damage: 0
+  range: 0
+  foodRestore: 0
+  waterRestore: 0
+  healthRestore: 0
+  breathRestore: 0
