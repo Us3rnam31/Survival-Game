@@ -11,19 +11,19 @@ public class Breath : MonoBehaviour
     public float currentBreath = 100f;
     public float totalBreath = 100f;
 
-    // Update is called once per frame
     void Update()
     {
         Bubble.fillAmount = currentBreath / totalBreath;
+
         if (player.transform.position.y < water.transform.position.y)
         {
             Bubble.enabled = true;
-            currentBreath -= 5f * Time.deltaTime;
+            currentBreath = Mathf.Clamp(currentBreath - 5f * Time.deltaTime, 0f, totalBreath);
         }
         else
         {
             Bubble.enabled = false;
-            currentBreath = 100f;
+            currentBreath = totalBreath;
         }
     }
 }

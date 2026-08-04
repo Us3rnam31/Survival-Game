@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class Death : MonoBehaviour
 {
     public HealthBar healthData;
@@ -8,14 +7,20 @@ public class Death : MonoBehaviour
     public GameObject deathScreen;
     public bool dead = false;
 
+    bool wasDead = false;
+
     void Start()
     {
         deathScreen.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Only change mouseLock when the death state actually changes,
+        // not every frame — otherwise it fights with menus that unlock the mouse.
+        if (dead == wasDead) return;
+        wasDead = dead;
+
         if (dead)
         {
             deathScreen.SetActive(true);

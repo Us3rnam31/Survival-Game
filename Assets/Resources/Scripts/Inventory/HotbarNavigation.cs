@@ -6,6 +6,7 @@ public class HotbarNavigation : MonoBehaviour
     public Transform holdPoint;
 
     public int selectedSlot = 0;
+    public int hotbarSize = 5;
 
     private GameObject heldObject;
 
@@ -20,62 +21,24 @@ public class HotbarNavigation : MonoBehaviour
 
         if (scroll > 0f)
         {
-            selectedSlot++;
+            selectedSlot = (selectedSlot + 1) % (hotbarSize + 1);
+            UpdateHeldItem();
+        }
+        else if (scroll < 0f)
+        {
+            selectedSlot = (selectedSlot - 1 + hotbarSize + 1) % (hotbarSize + 1);
+            UpdateHeldItem();
+        }
 
-            if (selectedSlot > 5)
+        // Number keys 0-5 select hotbar slots
+        for (int i = 0; i <= hotbarSize; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
             {
-                selectedSlot = 0;
+                selectedSlot = i;
+                UpdateHeldItem();
+                break;
             }
-
-            UpdateHeldItem();
-        }
-
-        if (scroll < 0f)
-        {
-            selectedSlot--;
-
-            if (selectedSlot < 0)
-            {
-                selectedSlot = 5;
-            }
-
-            UpdateHeldItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            selectedSlot = 0;
-            UpdateHeldItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            selectedSlot = 1;
-            UpdateHeldItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            selectedSlot = 2;
-            UpdateHeldItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            selectedSlot = 3;
-            UpdateHeldItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            selectedSlot = 4;
-            UpdateHeldItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            selectedSlot = 5;
-            UpdateHeldItem();
         }
     }
 
@@ -84,42 +47,29 @@ public class HotbarNavigation : MonoBehaviour
         if (heldObject != null)
         {
             Destroy(heldObject);
+            heldObject = null;
         }
 
         if (selectedSlot == 0)
-        {
             return;
-        }
 
-        InventorySlot slot = inventory.slots[selectedSlot - 1];
+        int inventoryIndex = selectedSlot - 1;
+        if (inventoryIndex >= inventory.slots.Count)
+            return;
+
+        InventorySlot slot = inventory.slots[inventoryIndex];
 
         if (slot.item == null)
-        {
             return;
-        }
 
-        heldObject = Instantiate(
-            slot.item.inventoryPrefab,
-            holdPoint
-        );
-
+        heldObject = Instantiate(slot.item.inventoryPrefab, holdPoint);
         heldObject.transform.localPosition = Vector3.zero;
         heldObject.transform.localRotation = Quaternion.identity;
 
         Rigidbody rb = heldObject.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-        }
+        if (rb != null) rb.isKinematic = true;
 
         Collider col = heldObject.GetComponent<Collider>();
-
-        if (col != null)
-        {
-            col.enabled = false;
-        }
-
-        Debug.Log(heldObject);
+        if (col != null) col.enabled = false;
     }
 }

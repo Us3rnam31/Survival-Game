@@ -12,11 +12,6 @@ public class PlayerCamera : MonoBehaviour
     public bool mouseLock = true;
     public StatusManager statusManager;
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         if (mouseLock)
@@ -34,17 +29,13 @@ public class PlayerCamera : MonoBehaviour
             if (Physics.Raycast(ray, out hit, range))
             {
                 if (hit.collider.gameObject != lastLooked)
-                {
                     lastLooked = hit.collider.gameObject;
-                }
 
                 if (lastLooked != null)
                 {
                     ItemPickup pickup = lastLooked.GetComponent<ItemPickup>();
                     if (pickup != null && Input.GetMouseButtonDown(0))
                     {
-                        ItemData item = lastLooked.GetComponent<ItemPickup>().itemData;
-                        Debug.Log("Picking up " + pickup.itemData.itemName);
                         inventory.AddItem(pickup.itemData, 1);
                         Destroy(lastLooked);
                         lastLooked = null;
@@ -52,9 +43,7 @@ public class PlayerCamera : MonoBehaviour
                 }
 
                 if (hit.collider.gameObject.CompareTag("water") && Input.GetKeyDown(KeyCode.E))
-                {
                     statusManager.UpdateWater(50);
-                }
             }
             else
             {

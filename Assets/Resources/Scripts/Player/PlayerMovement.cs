@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
     float velocityY;
 
     public InventoryManager inventory;
+    public HotbarNavigation hotbar;
 
     public bool movement = true;
-
     public bool isSwimming;
 
     void Update()
@@ -43,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             float accelRate = (targetSpeed > currentSpeed) ? acceleration : deceleration;
-
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, accelRate * Time.deltaTime);
 
             if (isSwimming)
@@ -59,26 +58,24 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 if (controller.isGrounded && velocityY < 0f)
-                {
                     velocityY = -2f;
-                }
 
                 if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
-                {
                     velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                }
 
                 velocityY += gravity * Time.deltaTime;
             }
 
             Vector3 velocity = move.normalized * currentSpeed;
             velocity.y = velocityY;
-
             controller.Move(velocity * Time.deltaTime);
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            // Drop currently selected hotbar item
+            if (Input.GetKeyDown(KeyCode.Q) && hotbar != null && hotbar.selectedSlot > 0)
             {
-                inventory.DropItem(0, transform.position + transform.forward * 2f);
+                int dropIndex = hotbar.selectedSlot - 1;
+                inventory.DropItem(dropIndex, transform.position + transform.forward * 2f);
+                hotbar.UpdateHeldItem();
             }
         }
     }

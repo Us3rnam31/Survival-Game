@@ -5,41 +5,34 @@ public class ItemAction : MonoBehaviour
     public InventoryManager inventory;
     public Camera playerCamera;
     public HotbarNavigation hotbar;
+    public PlayerCamera playerCameraScript;
 
-    // Update is called once per frame
     void Update()
     {
+        // Don't act while a menu is open
+        if (playerCameraScript != null && !playerCameraScript.mouseLock)
+            return;
+
         if (hotbar.selectedSlot == 0)
             return;
 
-        if (hotbar.selectedSlot - 1 >= inventory.slots.Count)
+        int inventoryIndex = hotbar.selectedSlot - 1;
+        if (inventoryIndex >= inventory.slots.Count)
             return;
 
-        if (Input.GetMouseButtonDown(0) &&
-            inventory.slots[hotbar.selectedSlot - 1].item != null)
-        {
-            Debug.Log("Clicked");
-            UseHeldItem();
-        }
+        if (Input.GetMouseButtonDown(0) && inventory.slots[inventoryIndex].item != null)
+            UseHeldItem(inventoryIndex);
     }
 
-    void UseHeldItem()
+    void UseHeldItem(int inventoryIndex)
     {
-        Ray ray = new Ray(
-            playerCamera.transform.position,
-            playerCamera.transform.forward
-        );
-
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
-
-        ItemData item = inventory.slots[hotbar.selectedSlot - 1].item;
+        ItemData item = inventory.slots[inventoryIndex].item;
 
         if (!Physics.Raycast(ray, out hit, item.range))
-        {
             return;
-        }
-        Debug.Log("Hit " + hit.collider.name);
 
         switch (item.ItemType)
         {
@@ -51,39 +44,20 @@ public class ItemAction : MonoBehaviour
 
     void UseTool(ItemData item, RaycastHit hit)
     {
-        Debug.Log("Hit: " + hit.collider.name);
-
         WorldObject worldObject = hit.collider.GetComponent<WorldObject>();
 
-        if (worldObject == null)
-        {
-            Debug.Log("no world object");
+        if (worldObject == null || !worldObject.data.harvestable)
             return;
-        }
-
-        if (!worldObject.data.harvestable)
-        {
-            Debug.Log("not harvestable");
-            return;
-        }
 
         if (item.toolType != worldObject.data.toolType)
-        {
-            Debug.Log("incorrect tool");
             return;
-        }
 
         worldObject.currentHealth -= item.damage;
 
-        Debug.Log("Health: " + worldObject.currentHealth);
-
         if (worldObject.currentHealth <= 0)
         {
-            Debug.Log("Deadified");
             foreach (ItemDrop drop in worldObject.data.drops)
-            {
                 inventory.AddItem(drop.item, drop.amount);
-            }
 
             Destroy(worldObject.transform.parent.gameObject);
         }
